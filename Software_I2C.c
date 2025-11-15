@@ -19,7 +19,7 @@ void Software_I2C_Init(void) {
 
     __HAL_RCC_GPIOB_CLK_ENABLE();   /* SCL引脚时钟使能 */
     __HAL_RCC_GPIOF_CLK_ENABLE();   /* SDA引脚时钟使能 */
-
+      HAL_TIM_Base_Start(&htim7);
     gpio_init_struct.Pin = GPIO_PIN_0;
     gpio_init_struct.Mode = GPIO_MODE_OUTPUT_OD;             /* 开漏输出 */
     gpio_init_struct.Pull = GPIO_PULLUP;                     /* 上拉 */
@@ -151,4 +151,5 @@ uint8_t iic_read_byte(uint8_t ack)
 
     return receive;
 }
+
 
