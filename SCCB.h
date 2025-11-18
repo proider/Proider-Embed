@@ -37,6 +37,8 @@ uint8_t sccb_write_reg(uint8_t reg, uint8_t data);
 uint8_t sccb_read_reg(uint8_t reg);
 uint8_t SCCB_WriteReg_16Bit(uint16_t addr,uint8_t value);
 uint8_t SCCB_ReadReg_16Bit (uint16_t addr);
+uint8_t SCCB_WriteBuffer_16Bit(uint16_t addr,uint8_t *pData, uint32_t size);
 
 #endif //SCCB_H
+
 
