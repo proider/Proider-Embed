@@ -78,4 +78,35 @@ void GetByteOffSet(uint32_t Unicode[],uint32_t length,uint32_t offset[],uint8_t 
     for (uint32_t i=0;i<length;i++) {
         offset[i] =Unicode[i]*BytePerCharacter;
     }
+
+}
+
+//显示UTF8字符，字库生成方式是阴码逆向逐列
+void LCD_DisplayChracter(uint16_t x, uint16_t y,uint32_t c)
+{
+    if (c<128) {
+        LCD_DisplayChar(x,y,c);
+    }
+    static uint8_t Character[128]={0};
+    uint16_t start_x = x;
+    uint16_t start_y = y;
+    uint32_t byteoffset =  (UTF8_Switch_Unicode(c)-0x4E00)*LAYER1.CHFont->FontPerByte;
+    UINT Br = 0;
+    f_lseek(&FONT_FILE,byteoffset);
+    f_read(&FONT_FILE,Character,LAYER1.CHFont->FontPerByte,&Br);
+    for (uint8_t i=0;i<LAYER1.CHFont->FontPerByte;i++) {
+        if (i%LAYER1.CHFont->height_byte==0) {
+            start_x++;
+            start_y = y;
+        }
+        for (uint8_t j=0;j<8;j++) {
+            if ((1<<j)&Character[i]) {
+                LCD_DrawPoint(start_x,start_y+j,LAYER1.Color);
+            }
+            else {
+                LCD_DrawPoint(start_x,start_y+j,LAYER1.BackColor);
+            }
+        }
+        start_y +=8;
+    }
 }
